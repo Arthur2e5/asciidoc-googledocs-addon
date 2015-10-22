@@ -256,7 +256,10 @@ function asciidocHandleList(child) {
   return result;
 }
 
-/** Guess if the text is code by looking at the font family. */
+/** Guess if the given text is code by looking at the font family.
+ * Now it recognizes Consolas, Courier New and Source Code Pro,
+ * and assumes all fonts with a name ending with ' Mono' is
+ * monospace (correct for all Google Fonts as of 2015-10-21). */
 function isTextCode(text) {
   // Things will be better if Google Fonts can tell us about a font
   var i, fontFamily = text.getFontFamily(), /* Now it returns a string! */
@@ -264,14 +267,13 @@ function isTextCode(text) {
   if (fontFamily === null) {
     return false; // Handle null early.. It means multiple values.
   }
-  // See ES7 Array.prototype.includes(elem, pos)
+  // See ES7 Array.prototype.includes(elem, pos).
   for (i = 0; i < monospaceFonts.length; i++) {
     if (fontFamily === monospaceFonts[i]) {
       return true;
     }
   }
   // Last Try: Assume it's mono if it ends with ' Mono'.
-  // This works for all Google Fonts as of 2016-10-21.
   // See ES6 String.prototype.endsWith(str, pos).
   return fontFamily.indexOf(' Mono') === fontFamily.length - 5;
 }
